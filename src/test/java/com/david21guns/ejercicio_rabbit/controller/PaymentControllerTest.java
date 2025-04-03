@@ -1,19 +1,16 @@
 package com.david21guns.ejercicio_rabbit.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.david21guns.ejercicio_rabbit.dto.PaymentDTO;
-import com.david21guns.ejercicio_rabbit.exception.ResourceNotFoundException;
-import com.david21guns.ejercicio_rabbit.model.Payment;
-import com.david21guns.ejercicio_rabbit.repository.PaymentRepository;
+import com.david21guns.ejercicio_rabbit.service.PaymentService;
 
 @SpringBootTest
 class PaymentControllerTest {
@@ -22,17 +19,11 @@ class PaymentControllerTest {
 	private PaymentController controller;
 	
 	@Mock
-	private RabbitTemplate template;
-
-	@Mock
-	private PaymentRepository repository;
-	
-	private Payment mockPayment;
-	
+	private PaymentService paymentService;
+		
     @BeforeEach
     public void setup(){
-	  this.mockPayment = new Payment("67eb0a67bd5d3e1e163abd32","concepto",1,"emisor","receptor",10.50,"estatus","2025-04-01");
-	  
+    	this.controller = new PaymentController(paymentService);
     }
 	
 	@Test
@@ -40,16 +31,16 @@ class PaymentControllerTest {
 		assertThat(controller).isNotNull();
 	}
 	
-	/*
+	
 	@Test
 	void testCreatePayment() {
 		 PaymentDTO mockPaymentDTO = new PaymentDTO("","",1,"","",2.2,"","");
-		assertThat(this.controller.createPayment(this.mockPayment)).isNotNull();
+		assertThat(this.controller.createPayment(mockPaymentDTO)).isNotNull();
 	}
-	*/
+	
 	
    /*
-    * @Test
+    @Test
     void testExceptionIsThrown() {
         assertThrows(ResourceNotFoundException.class, () -> {
             throwException();
@@ -57,7 +48,20 @@ class PaymentControllerTest {
     }
 
     private void throwException() {
-        //controller.uptadeStatus("321", this.mockPayment);
+		 PaymentDTO mockPaymentDTO = new PaymentDTO("","",1,"","",2.2,"","");
+
+        controller.uptadeStatus("321",mockPaymentDTO );
     }
     */
+	/*
+	@Test
+	void testGetAll() {
+		List<PaymentDTO> list = new ArrayList<PaymentDTO>();
+		ResponseEntity<?> responseEntity = new ResponseEntity<>(list,HttpStatus.OK);
+		
+		when(controller.getPayments()).thenReturn(responseEntity);
+		
+		ResponseEntity<?> response=controller.getPayments();
+		assertEquals(response.getStatusCode(), HttpStatus.OK);
+	}*/
 }
