@@ -78,6 +78,4 @@ public class PaymentService {
                 payment -> PaymentMapper.mapper.paymentToPaymentDto(payment)).collect(Collectors.toList());
 		return paymentDTOS;
 	}
-	
-	
 }
